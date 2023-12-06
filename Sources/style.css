@@ -1,11 +1,7 @@
-/*Reset des styles*/
+/*Start : Reset*/
 
-html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, 
-menu, nav, output, ruby, section, summary, time, mark, audio, video {
+html, body, div, h1, h2, h3, h4, h5, h6, p, a, img, label,
+article, canvas, footer, header, section {
 	margin: 0;
 	padding: 0;
 	border: 0;
@@ -16,93 +12,94 @@ menu, nav, output, ruby, section, summary, time, mark, audio, video {
 */
 /* HTML5 display-role reset for older browsers */
 
-article, aside, details, figcaption, figure, 
-footer, header, hgroup, menu, nav, section {
+article, footer, header, section {
 	display: block;
 }
 body {
 	line-height: 1;
 }
-ol, ul {
-	list-style: none;
-}
-blockquote, q {
-	quotes: none;
-}
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
-}
-table {
-	border-collapse: collapse;
-	border-spacing: 0;
-}
+/*End: Reset
 
-/* Styles*/
-body {
+/*Start: Static styles*/
+html {
 	text-align: center;
-	/*border: 1px red solid;*/
 	min-height: 100%;
-}
-
-#pageTitle {
-	font-size: xx-large;
-	/*border: 1px red solid;*/
-	padding: 1rem;
-}
-
-#player1, #player2, #player1ScoreGlobal, #player2ScoreGlobal, #player1ScoreRoundDiv, 
-#player2ScoreRoundDiv {
-	font-size: xx-large;
-	/*border: 1px blue solid;*/
-	padding: 1rem
+	background: linear-gradient(0.1turn, #3f87a6, #ebf8e1, #f69d3c);
 }
 
 #mainContent {
-	display: flex;
-	flex: 1;
-	height: auto;
-	gap: 1rem;
-	/*border: 1px red solid;*/
+	display: grid;
+	grid-template-columns: repeat(12, 1fr);
+	grid-template-rows: repeat(6, auto);
 }
 
-#player1Section, #player2Section {
-	display: flex;
-	flex-direction: column;
-	flex: 4;
-	/*border: 1px red solid;*/
-	align-items: center;
-	justify-content: center;
+#player1Section {
+	grid-column: 1 / 6;
+	grid-row: 2 / 7;
+}
+
+#player2Section {
+	grid-column: 8 / 13;
+	grid-row: 2 / 7;
 }
 
 #sectionButtons {
+	grid-column: 6 / 8;
+	grid-row: 1 / 7;
 	display: flex;
 	flex-direction: column;
-	flex: 1;
-	/*border: 1px red solid;*/
+	align-items: center;
 }
 
-#player1ScoreGlobal, #player2ScoreGlobal, #dice {
-	width: auto;
-	height: auto;
-	/*border: 1px blue solid;*/
-	text-align: center;
-	vertical-align: middle;
+#newGameButton, #rollDiceButton, #holdButton {
+	width: fit-content;
+	background-color: #3f87a6;
+	border-radius: 10px;
 }
 
 #dice {
-	width: 150px;
+	width: 100%;
 }
 
+#player1GameWonDiv, #player2GameWonDiv, #player1ScoreRoundDiv, #player2ScoreRoundDiv {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	margin: 1rem;
+}
+
+#player1GameWon, #player2GameWon, #player1ScoreRound, #player2ScoreRound {
+	margin-left: 0.2rem;
+}
+
+#pageTitle, #player1, #player2 {
+	font-size: xx-large;
+	padding: 1rem;
+}
+
+#player1ScoreGlobal, #player2ScoreGlobal, #player1ScoreRoundDiv, 
+#player2ScoreRoundDiv {
+	font-size: x-large;
+	padding: 1rem
+}
+
+/*End: Static styles*/
+
+/*Start: Dynamic styles*/
 .activePlayer {
-	background-color: rgba(124, 185, 255, 0.705);
+	font-weight: 800;
+}
+
+.inactivePlayer {
+	opacity: 0.2;
 }
 
 .invisible {
 	visibility: hidden;
 }
+/*End: Dynamic styles*/
 
+/*Start: Animations*/
 .winnerPlayer  {
 	animation-duration: .8s;
 	animation-name: twinkle;
@@ -115,3 +112,4 @@ body {
  50%   {opacity:0; }
  100% { opacity:1; }
 }
+/*End: Animations*/

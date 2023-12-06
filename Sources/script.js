@@ -1,83 +1,123 @@
-//2 joueurs
+//Player class declaration
 class Player {
-  //Déclaration des propriétés
+  //Properties declaration
   name;
   scoreRound;
   scoreGlobal;
-  //Définition du constructeur
+  gameWon;
+  //constructor definition
   constructor(name) {
     this.name = name;
     this.scoreRound = 0;
     this.scoreGlobal = 0;
+    this.gameWon = 0;
   }
 }
 const player1 = new Player("player1");
 const player2 = new Player("player2");
 
-//Créer une nouvelle partie
+//Game class declaration
 class DiceGame {
-  //Déclaration des propriétés
+  //Properties declaration
   gameTurn;
   gameWinner;
   activePlayer;
-  //Déclaration du constructeur
+  inactivePlayer;
+  //Constructor definition
   constructor() {
     this.gameTurn = 0;
-    this.gameWinner = "";
+    this.gameWinner = undefined;
     this.activePlayer = undefined;
+    this.inactivePlayer = undefined;
   }
 }
 const currentGame = new DiceGame();
 
-//Dés
+//Variables declaration
+//Dice
 let dice = 0;
 const diceTab =['./Images/dice_0.webp', './Images/dice_1.webp', './Images/dice_2.webp', './Images/dice_3.webp', './Images/dice_4.webp', './Images/dice_5.webp', './Images/dice_6.webp'];
 let diceDOM = document.getElementById('dice');
 diceDOM.setAttribute('src', diceTab[0]);
+//DOM: Round score
+let player1ScoreRoundDOM = document.getElementById('player1ScoreRound');
+let player2ScoreRoundDOM = document.getElementById('player2ScoreRound');
+//DOM: Global score
+let player1ScoreGlobalDOM = document.getElementById('player1ScoreGlobal');
+let player2ScoreGlobalDOM = document.getElementById('player2ScoreGlobal');
+//DOM: Game won
+let player1GameWon = document.getElementById('player1GameWon');
+let player2GameWon = document.getElementById('player2GameWon');
+//DOM: Classes (for the display)
+//Players 1 and 2
+let player1SectionDOM = document.getElementById('player1Section');
+let player2SectionDOM = document.getElementById('player2Section');
+//Buttons roll dice and hold
+let rollDiceButtonDOM = document.getElementById('rollDiceButton');
+let holdButtonDOM = document.getElementById('holdButton');
 
-//Lancer une nouvelle partie
+//Launch new game
 document.getElementById('newGameButton').addEventListener('click', () => {
   currentGame.activePlayer = player1;
-  //Ré-initialise les variables
-  dice = 0;
-  player1.scoreGlobal = 0;
+  currentGame.inactivePlayer = player2;
+  //Reset the Round score
   player1.scoreRound = 0;
+  player2.scoreRound = 0;  
+  player1ScoreRoundDOM.innerHTML = 0;  
+  player2ScoreRoundDOM.innerHTML = 0;
+  //Reset the Global score
+  player1.scoreGlobal = 0;  
   player2.scoreGlobal = 0;
-  player2.scoreRound = 0;
-  //Affichage des variables
+  player1ScoreGlobalDOM.innerHTML = 0;  
+  player2ScoreGlobalDOM.innerHTML = 0;
+  //Reset the dice
+  dice = 0;
   diceDOM.setAttribute('src', diceTab[dice]);
-  document.getElementById('player1ScoreRound').innerHTML = 0;
-  document.getElementById('player1ScoreGlobal').innerHTML = 0;
-  document.getElementById('player2ScoreRound').innerHTML = 0;
-  document.getElementById('player2ScoreGlobal').innerHTML = 0;
-  //Ré-initialise les classes
-  document.getElementById('player1Section').classList.remove('activePlayer');
-  document.getElementById('player2Section').classList.remove('activePlayer');
-  document.getElementById('player1Section').classList.remove('winnerPlayer');
-  document.getElementById('player2Section').classList.remove('winnerPlayer');
-  document.getElementById('player1Section').classList.add('activePlayer');
+  //Reset the classes (for the display)
+  //Reset the class for the active and the inactive players
+  player1SectionDOM.classList.remove('activePlayer');  
+  player2SectionDOM.classList.remove('activePlayer');
+  player1SectionDOM.classList.remove('inactivePlayer');  
+  player2SectionDOM.classList.remove('inactivePlayer');
+  //Reset the class for the winner player
+  player1SectionDOM.classList.remove('winnerPlayer');
+  player2SectionDOM.classList.remove('winnerPlayer');
+  //Reset the class for the invisible part to allow the game
   diceDOM.classList.remove('invisible');
-  document.getElementById('newDiceLaunchButton').classList.remove('invisible');
-  document.getElementById('holdButton').classList.remove('invisible');
+  rollDiceButtonDOM.classList.remove('invisible');  
+  holdButtonDOM.classList.remove('invisible');
+  //Set player 1 as the active player and player 2 as the inactive player
+  player1SectionDOM.classList.add('activePlayer');
+  player2SectionDOM.classList.add('inactivePlayer');
 });
 
 
-//Lancer le dé
-document.getElementById('newDiceLaunchButton').addEventListener('click', () => {
-  dice = Math.ceil(Math.random() * 6);
-  diceDOM.setAttribute('src', diceTab[dice]);
-  
+//Roll the dice
+rollDiceButtonDOM.addEventListener('click', () => {
+  //Roll the dice x times to simulate animation on the screen
+  let diceAnimationVariable = Math.ceil(Math.random() * 12);
+  for (let i = 1; i <= diceAnimationVariable; i++) {
+    dice = Math.ceil(Math.random() * 6);
+    diceDOM.setAttribute('src', diceTab[dice]);
+    //wait
+  }
+  //Examine the result of the dice roll
   if(dice === 1) {
+    //Round score is lost and active player changes
     //wait(2000).then(() => {
+    //Round score is lost
     currentGame.activePlayer.scoreRound = 0;
     document.getElementById(currentGame.activePlayer.name + 'ScoreRound').innerHTML = 0;
     alert(`Le dés vaut : ${dice}. Changement de joueur`)
+    //Reset of the dice
     dice = 0;
     diceDOM.setAttribute('src', diceTab[dice]);
+    //Change of the active player
     activePlayerChange();
     //})
   }
   else {
+    //Round score is increased and the game continue for the active player
     currentGame.activePlayer.scoreRound += dice;
     document.getElementById(currentGame.activePlayer.name + 'ScoreRound').innerHTML = currentGame.activePlayer.scoreRound;
   }
@@ -85,56 +125,63 @@ document.getElementById('newDiceLaunchButton').addEventListener('click', () => {
 });
 
 
-//Garder le score
+//Hold the score
 const holdButton = document.getElementById('holdButton');
 holdButton.addEventListener('click', () => {
-  //On ajoute le score du round au score global
+  //Add the round score to the global score of the active player
   currentGame.activePlayer.scoreGlobal += currentGame.activePlayer.scoreRound;
   document.getElementById(currentGame.activePlayer.name + 'ScoreGlobal').innerHTML = currentGame.activePlayer.scoreGlobal;
   currentGame.activePlayer.scoreRound = 0;
   document.getElementById(currentGame.activePlayer.name + 'ScoreRound').innerHTML = 0;
-  dice = '?';
-  diceDOM.innerHTML = '?';
+  //Reset of the dice
+  dice = 0;
+  diceDOM.setAttribute('src', diceTab[dice]);
   if (currentGame.activePlayer.scoreGlobal > 99) {
-    //Fin du jeu
+    //end of the game
     endgame();
   }
   else {
-    //On change de joueur
+    //Change of player
     activePlayerChange();
   }
 });
 
 
-//Fonction de changement de joueur actif
+//Function to change the active player
 function activePlayerChange() {
   if(currentGame.activePlayer == player1) {
     currentGame.activePlayer = player2;
-    document.getElementById('player1Section').classList.remove('activePlayer');
-    document.getElementById('player2Section').classList.add('activePlayer');
+    currentGame.inactivePlayer = player1;
+    player1SectionDOM.classList.replace('activePlayer', 'inactivePlayer');
+    player2SectionDOM.classList.replace('inactivePlayer', 'activePlayer');
 
   }
   else {
     currentGame.activePlayer = player1;
-    document.getElementById('player2Section').classList.remove('activePlayer');
-    document.getElementById('player1Section').classList.add('activePlayer');
+    currentGame.inactivePlayer = player2;
+    player2SectionDOM.classList.replace('activePlayer', 'inactivePlayer');
+    player1SectionDOM.classList.replace('inactivePlayer', 'activePlayer');
   }
 }
 
-//Fin du jeu
+//Function to end the game
 function endgame() {
-  /*
-  document.getElementById('player1Section').classList.remove('activePlayer');
-  document.getElementById('player2Section').classList.remove('activePlayer');
-  */
+  //Disable the game to continue
   diceDOM.classList.add('invisible');
-  document.getElementById('newDiceLaunchButton').classList.add('invisible');
-  document.getElementById('holdButton').classList.add('invisible');
-  document.getElementById(currentGame.activePlayer.name + 'Section').classList.add('winnerPlayer')
+  rollDiceButtonDOM.classList.add('invisible');
+  holdButtonDOM.classList.add('invisible');
+  //Hide the label current game
   document.getElementById(currentGame.activePlayer.name + 'ScoreRoundLabel').classList.add('invisible');
+  //Writte WINNER instead of the round score
   document.getElementById(currentGame.activePlayer.name + 'ScoreRound').innerHTML = 'WINNER';
+  //Highlight the winner player
+  document.getElementById(currentGame.activePlayer.name + 'Section').classList.add('winnerPlayer');
+  //Update the winner player game won counter
+  currentGame.activePlayer.gameWon++;
+  document.getElementById(currentGame.activePlayer.name + 'GameWon').innerHTML = currentGame.activePlayer.gameWon;
 }
 
+//Function to waste time (*** to complete)
 function wait(time) {
   return new Promise(resolve => setTimeout(resolve, time));
 }

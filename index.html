@@ -7,26 +7,31 @@
   <link rel="stylesheet" href="./Sources/style.css" type="text/css">
   <script src="./Sources/script.js" defer></script>
 </head>
-<body>
-  <h1 id="pageTitle">Dice game</h1>
-  <main id="mainContent">
-    
+<body id="container">
+  <header id="header">
+    <h1 id="pageTitle">Dice game</h1>
+  </header>
+  
+  <main id="mainContent">    
     <!--Player 1-->
     <section id="player1Section" class="">
       <h2 id="player1">Player 1</h2>
       <h3 id="player1ScoreGlobal">0</h3>
       <div id="player1ScoreRoundDiv">
-        <label id="player1ScoreRoundLabel" for="player1ScoreRound">Current</label>
+        <label id="player1ScoreRoundLabel" for="player1ScoreRound">Current: </label>
         <h3 id="player1ScoreRound">0</h3>
       </div>
-      
+      <div id="player1GameWonDiv">
+        <label id="player1GameWonLabel" for="player1GameWon">Games won: </label>
+        <h3 id="player1GameWon">0</h3>
+      </div>
     </section>
     
     <!--Dice and buttons-->
     <section id="sectionButtons">
       <button id="newGameButton" type="button">New Game</button>
       <img id="dice" src="./Images/dice_0.svg" alt="Dice with no value" class="invisible">
-      <button id="newDiceLaunchButton" type="button" class="invisible">Roll dice</button>
+      <button id="rollDiceButton" type="button" class="invisible">Roll dice</button>
       <button id="holdButton" type="button" class="invisible">Hold</button>
     </section>
     
@@ -36,12 +41,14 @@
       <h2 id="player2">Player 2</h2>
       <h3 id="player2ScoreGlobal">0</h3>
       <div id="player2ScoreRoundDiv">
-        <label id="player2ScoreRoundLabel" for="player2ScoreRound">Current</label>
+        <label id="player2ScoreRoundLabel" for="player2ScoreRound">Current: </label>
         <h3 id="player2ScoreRound">0</h3>
+      </div>
+      <div id="player2GameWonDiv">
+        <label id="player2GameWonLabel" for="player2GameWon">Games won: </label>
+        <h3 id="player2GameWon">0</h3>
       </div>
     </section>
   </main>
-  
-  
 </body>
 </html>

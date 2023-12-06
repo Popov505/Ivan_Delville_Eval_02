@@ -40,7 +40,9 @@ const diceTab =['./Images/dice_0.webp', './Images/dice_1.webp', './Images/dice_2
 let diceDOM = document.getElementById('dice');
 diceDOM.setAttribute('src', diceTab[0]);
 //DOM: Round score
+let player1ScoreRoundLabel = document.getElementById('player1ScoreRoundLabel');
 let player1ScoreRoundDOM = document.getElementById('player1ScoreRound');
+let player2ScoreRoundLabel = document.getElementById('player2ScoreRoundLabel');
 let player2ScoreRoundDOM = document.getElementById('player2ScoreRound');
 //DOM: Global score
 let player1ScoreGlobalDOM = document.getElementById('player1ScoreGlobal');
@@ -65,6 +67,8 @@ document.getElementById('newGameButton').addEventListener('click', () => {
   player2.scoreRound = 0;  
   player1ScoreRoundDOM.innerHTML = 0;  
   player2ScoreRoundDOM.innerHTML = 0;
+  player1ScoreRoundLabel.innerHTML = 'Current:';
+  player2ScoreRoundLabel.innerHTML = 'Current:';
   //Reset the Global score
   player1.scoreGlobal = 0;  
   player2.scoreGlobal = 0;
@@ -170,10 +174,9 @@ function endgame() {
   diceDOM.classList.add('invisible');
   rollDiceButtonDOM.classList.add('invisible');
   holdButtonDOM.classList.add('invisible');
-  //Hide the label current game
-  document.getElementById(currentGame.activePlayer.name + 'ScoreRoundLabel').classList.add('invisible');
-  //Writte WINNER instead of the round score
-  document.getElementById(currentGame.activePlayer.name + 'ScoreRound').innerHTML = 'WINNER';
+  //Writte YOU WIN instead of the round score
+  document.getElementById(currentGame.activePlayer.name + 'ScoreRoundLabel').innerHTML = 'YOU';
+  document.getElementById(currentGame.activePlayer.name + 'ScoreRound').innerHTML = 'WIN';
   //Highlight the winner player
   document.getElementById(currentGame.activePlayer.name + 'Section').classList.add('winnerPlayer');
   //Update the winner player game won counter

@@ -39,6 +39,7 @@ let dice = 0;
 const diceTab =['./Images/dice_0.webp', './Images/dice_1.webp', './Images/dice_2.webp', './Images/dice_3.webp', './Images/dice_4.webp', './Images/dice_5.webp', './Images/dice_6.webp'];
 let diceDOM = document.getElementById('dice');
 diceDOM.setAttribute('src', diceTab[0]);
+let diceAnimationVariable = 0;
 //DOM: Round score
 let player1ScoreRoundLabel = document.getElementById('player1ScoreRoundLabel');
 let player1ScoreRoundDOM = document.getElementById('player1ScoreRound');
@@ -54,9 +55,10 @@ let player2GameWon = document.getElementById('player2GameWon');
 //Players 1 and 2
 let player1SectionDOM = document.getElementById('player1Section');
 let player2SectionDOM = document.getElementById('player2Section');
-//Buttons roll dice and hold
+//Buttons roll dice hold and new game
 let rollDiceButtonDOM = document.getElementById('rollDiceButton');
 let holdButtonDOM = document.getElementById('holdButton');
+let newGameButtonDOM = document.getElementById('newGameButton');
 
 //Launch new game
 document.getElementById('newGameButton').addEventListener('click', () => {
@@ -98,36 +100,12 @@ document.getElementById('newGameButton').addEventListener('click', () => {
 
 //Roll the dice
 rollDiceButtonDOM.addEventListener('click', () => {
-  //Roll the dice x times to simulate animation on the screen
-  let diceAnimationVariable = Math.ceil(Math.random() * 12);
-  for (let i = 1; i <= diceAnimationVariable; i++) {
-    dice = Math.ceil(Math.random() * 6);
-    diceDOM.setAttribute('src', diceTab[dice]);
-    //wait
-  }
-  //Examine the result of the dice roll
-  if(dice === 1) {
-    //Round score is lost and active player changes
-    //wait(2000).then(() => {
-    //Round score is lost
-    currentGame.activePlayer.scoreRound = 0;
-    document.getElementById(currentGame.activePlayer.name + 'ScoreRound').innerHTML = 0;
-    alert(`Le dés vaut : ${dice}. Changement de joueur`)
-    //Reset of the dice
-    dice = 0;
-    diceDOM.setAttribute('src', diceTab[dice]);
-    //Change of the active player
-    activePlayerChange();
-    //})
-  }
-  else {
-    //Round score is increased and the game continue for the active player
-    currentGame.activePlayer.scoreRound += dice;
-    document.getElementById(currentGame.activePlayer.name + 'ScoreRound').innerHTML = currentGame.activePlayer.scoreRound;
-  }
-  console.log(currentGame.activePlayer);
+  diceAnimationVariable = 5 + Math.ceil(Math.random() * 10);
+  /*Launch the function disableButtons, which disables the buttons
+  then call the function which rolls the dice
+  then call the function which examines the result*/
+  disableButtons();
 });
-
 
 //Hold the score
 const holdButton = document.getElementById('holdButton');
@@ -158,7 +136,6 @@ function activePlayerChange() {
     currentGame.inactivePlayer = player1;
     player1SectionDOM.classList.replace('activePlayer', 'inactivePlayer');
     player2SectionDOM.classList.replace('inactivePlayer', 'activePlayer');
-
   }
   else {
     currentGame.activePlayer = player1;
@@ -185,6 +162,54 @@ function endgame() {
 }
 
 //Function to waste time (*** to complete)
-function wait(time) {
+function wasteTime(time) {
   return new Promise(resolve => setTimeout(resolve, time));
 }
+
+//Function to roll dice which needs the wasting time function
+//Roll the dice x times to simulate animation on the screen
+async function rollDiceFunction() {
+  for (let i = 1; i <= diceAnimationVariable; i++) {
+      dice = Math.ceil(Math.random() * 6);
+      diceDOM.setAttribute('src', diceTab[dice]);
+      await wasteTime(200);
+  };
+};
+
+//Display the dice 
+async function diceDisplay() {
+  //Wait for dice to roll
+  await rollDiceFunction();
+  await wasteTime(1000);
+  if (dice === 1) {
+    //Round score is lost
+    currentGame.activePlayer.scoreRound = 0;
+    document.getElementById(currentGame.activePlayer.name + 'ScoreRound').innerHTML = 0;
+    //Reset of the dice
+    dice = 0;
+    diceDOM.setAttribute('src', diceTab[dice]);
+    //Change of the active player
+    activePlayerChange();
+  }
+  else {
+    //Round score is increased and the game continue for the active player
+    currentGame.activePlayer.scoreRound += dice;
+    document.getElementById(currentGame.activePlayer.name + 'ScoreRound').innerHTML = currentGame.activePlayer.scoreRound;
+  }
+};
+
+
+//Disable the buttons
+async function disableButtons() {
+  newGameButtonDOM.setAttribute('disabled', '');
+  rollDiceButtonDOM.setAttribute('disabled', '');
+  holdButtonDOM.setAttribute('disabled', '');
+  /*Call the function that 
+  calls the function which rolls the dice 
+  then displays the dice value*/
+  await diceDisplay();
+  //Enable the buttons
+  newGameButtonDOM.removeAttribute('disabled');
+  rollDiceButtonDOM.removeAttribute('disabled');
+  holdButtonDOM.removeAttribute('disabled');
+};

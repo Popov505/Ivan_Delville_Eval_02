@@ -25,6 +25,7 @@ html {
 	text-align: center;
 	min-height: 100%;
 	background: linear-gradient(0.1turn, #3f87a6, #ebf8e1, #f69d3c);
+	font-family: 'Lato', sans-serif;
 }
 
 #mainContent {
@@ -108,8 +109,8 @@ html {
 }
 
 @keyframes twinkle {
- 0%   { opacity:1; }
- 50%   {opacity:0; }
- 100% { opacity:1; }
+ 0% {opacity:1;}
+ 50% {opacity:0;}
+ 100% {opacity:1;}
 }
 /*End: Animations*/

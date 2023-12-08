@@ -991,10 +991,10 @@
        style="color-interpolation-filters:sRGB"
        inkscape:label="Drop Shadow"
        id="filter427"
-       x="-0.047853184"
-       y="-0.047853184"
-       width="1.1126154"
-       height="1.1126154">
+       x="-0.040581718"
+       y="-0.040581718"
+       width="1.0980725"
+       height="1.0980725">
       <feFlood
          result="flood"
          in="SourceGraphic"
@@ -1070,7 +1070,7 @@
      id="layer1"
      transform="translate(-107.22303,-138.74057)">
     <rect
-       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.860068;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter427)"
+       style="fill:none;fill-opacity:1;stroke:none;stroke-width:0.860068;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter427)"
        id="rect1-6-3"
        width="59.139931"
        height="59.139931"

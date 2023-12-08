@@ -54,7 +54,9 @@ let player2GameWon = document.getElementById('player2GameWon');
 //DOM: Classes (for the display)
 //Players 1 and 2
 let player1SectionDOM = document.getElementById('player1Section');
+let player1DotDOM = document.getElementById('player1Dot');
 let player2SectionDOM = document.getElementById('player2Section');
+let player2DotDOM = document.getElementById('player2Dot');
 //Buttons roll dice hold and new game
 let rollDiceButtonDOM = document.getElementById('rollDiceButton');
 let holdButtonDOM = document.getElementById('holdButton');
@@ -69,8 +71,8 @@ document.getElementById('newGameButton').addEventListener('click', () => {
   player2.scoreRound = 0;  
   player1ScoreRoundDOM.innerHTML = 0;  
   player2ScoreRoundDOM.innerHTML = 0;
-  player1ScoreRoundLabel.innerHTML = 'Current:';
-  player2ScoreRoundLabel.innerHTML = 'Current:';
+  player1ScoreRoundLabel.innerHTML = 'CURRENT';
+  player2ScoreRoundLabel.innerHTML = 'CURRENT';
   //Reset the Global score
   player1.scoreGlobal = 0;  
   player2.scoreGlobal = 0;
@@ -85,6 +87,8 @@ document.getElementById('newGameButton').addEventListener('click', () => {
   player2SectionDOM.classList.remove('activePlayer');
   player1SectionDOM.classList.remove('inactivePlayer');  
   player2SectionDOM.classList.remove('inactivePlayer');
+  player1DotDOM.classList.remove('visually-hidden');
+  player2DotDOM.classList.remove('visually-hidden');
   //Reset the class for the winner player
   player1SectionDOM.classList.remove('winnerPlayer');
   player2SectionDOM.classList.remove('winnerPlayer');
@@ -95,6 +99,7 @@ document.getElementById('newGameButton').addEventListener('click', () => {
   //Set player 1 as the active player and player 2 as the inactive player
   player1SectionDOM.classList.add('activePlayer');
   player2SectionDOM.classList.add('inactivePlayer');
+  player2DotDOM.classList.add('visually-hidden');
 });
 
 
@@ -136,12 +141,16 @@ function activePlayerChange() {
     currentGame.inactivePlayer = player1;
     player1SectionDOM.classList.replace('activePlayer', 'inactivePlayer');
     player2SectionDOM.classList.replace('inactivePlayer', 'activePlayer');
+    player1DotDOM.classList.add('visually-hidden');
+    player2DotDOM.classList.remove('visually-hidden'); 
   }
   else {
     currentGame.activePlayer = player1;
     currentGame.inactivePlayer = player2;
     player2SectionDOM.classList.replace('activePlayer', 'inactivePlayer');
     player1SectionDOM.classList.replace('inactivePlayer', 'activePlayer');
+    player2DotDOM.classList.add('visually-hidden');
+    player1DotDOM.classList.remove('visually-hidden'); 
   }
 }
 
@@ -180,8 +189,9 @@ async function rollDiceFunction() {
 async function diceDisplay() {
   //Wait for dice to roll
   await rollDiceFunction();
-  await wasteTime(1000);
   if (dice === 1) {
+    //Let time to the user to understand why the active player changes
+    await wasteTime(1000);
     //Round score is lost
     currentGame.activePlayer.scoreRound = 0;
     document.getElementById(currentGame.activePlayer.name + 'ScoreRound').innerHTML = 0;
